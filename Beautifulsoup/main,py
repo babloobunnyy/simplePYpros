@@ -1,0 +1,20 @@
+import requests
+from bs4 import BeautifulSoup
+
+url="https://www.crossword.in/books#/?sort_type=price_in_desc&_xhr=1"
+
+page=requests.get(url)
+crossword=page.text
+new_soup=BeautifulSoup(crossword, "html.parser")
+books=[]
+price=[]
+books_title=new_soup.findAll(name='span',class_="variant-title")
+for book in books_title:
+    b=book.text
+    books.append(b.strip())
+books_price=new_soup.findAll(name='span',class_="m-w")
+for pri in books_price:
+    p=pri.text
+    price.append(p)
+details=dict(zip(price,books))
+print(details)
